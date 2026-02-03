@@ -129,3 +129,5 @@ This specification reflects a stable, production-hardened design.
 Implementation details are intentionally omitted.
 
 The focus is on guarantees, invariants, and failure behavior — the aspects that matter when trust is on the line.
+
+For private inquiries, please open an issue or contact the repository owner via GitHub.
