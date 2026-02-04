@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 | Normal operation | No | No | No-op | Continuous |
 | Watchdog fired | Yes | Yes | Yes | `[Seg N] → [GAP] → [Seg N+1]` |
-| Watchdog fired | Yes | No | Yes | `[Seg N] → [Seg N+1]` (timestamp jump) |
+| Watchdog fired, GAP not persisted | Yes | No | No | Chain ends at last sealed segment |
 | Storage missing | Yes | Yes | No | Chain frozen |
 | Storage corrupted | Yes | N/A | No | Chain terminal |
 
@@ -48,3 +48,4 @@ Implementations may emit non-hashed diagnostic events indicating recovery invoca
 (e.g., recovery time, previous terminal `seg_id`, new starting `seg_id`).
 
 Such telemetry must never affect cryptographic integrity.
+
