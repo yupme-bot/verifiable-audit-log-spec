@@ -5,7 +5,7 @@
 Kernel v1.2 implements a **forensic-grade cryptographic audit chain** for event capture systems. The design provides:
 
 - **Tamper-evident**: Any modification breaks the cryptographic chain
-- **Crash-aware: Partial logs remain verifiable up to the crash point
+- **Crash-aware**: Partial logs remain verifiable up to the crash point
 - **Gap-aware**: Missing data is cryptographically incorporated, not hidden
 - **Deterministic**: Same events produce identical hashes across environments
 - **Forward-compatible**: Versioned design allows future evolution
@@ -714,4 +714,5 @@ The system is suitable for:
 - Legal discovery workflows (tamper-evident records)
 
 The cryptographic design is sound, the engineering is practical, and the documentation is excellent. This is a well-thought-out system ready for production use.
+
 
