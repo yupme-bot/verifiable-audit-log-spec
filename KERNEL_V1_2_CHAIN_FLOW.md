@@ -48,7 +48,7 @@ root_ch = SHA256(stableStringify(["audit_root_v1.2", run_id]))
    │  root_ch, terminal_ch  │
    └───────────────────────┘
 ```
-
+Note: GAP records are exceptional. They are emitted only when a failure boundary is explicitly recorded (e.g., watchdog-triggered persistence failure), not during normal operation.
 ---
 
 ## 2) Exact hash formulas (as implemented)
@@ -131,3 +131,4 @@ Any hash mismatch / reordering / tampering => `status: "invalid"`.
 **Why the active segment is excluded from export:**
 
 Exporting unsealed data creates unverifiable output—records that appear in the file but were never sealed into the hash chain. Persisted-chain-only export avoids this failure mode.
+
