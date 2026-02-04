@@ -633,7 +633,7 @@ Then:
 | **Determinism** | ✅ Export-time | ✅ Capture-time |
 | **Gap detection** | ✅ Explicit records | ✅ Cryptographically bound |
 | **Tamper detection** | ❌ No crypto | ✅ SHA-256 chain |
-| **Partial verification** | ❌ Not supported | ✅ Crash-resilient |
+| **Partial verification** | ❌ Not supported | ✅ Crash-aware |
 | **Stored integrity** | ❌ No hashes | ✅ Per-segment h/ch |
 | **Chain resume** | ❌ N/A | ✅ Survives reloads |
 | **Audit trail** | ⚠️ Export-only | ✅ Point-of-capture |
@@ -706,13 +706,14 @@ Kernel v1.2 provides a **production-ready, forensic-grade event capture system**
 ✅ **Compatibility** - Versioned design, clear migration path
 ✅ **Forensic utility** - Independent verification, audit trails
 
-The system is suitable for:
+The system is suitable as a technical component within:
 - Regulated industries (finance, healthcare)
-- Compliance logging systems (SOX, GDPR, HIPAA
+- Compliance logging systems (SOX, GDPR, HIPAA)
 - Security audit trails (e.g., SIEM integrations)
 - Event sourcing systems (with integrity guarantees)
 - Legal discovery workflows (tamper-evident records)
 
 The cryptographic design is sound, the engineering is practical, and the documentation is excellent. This is a well-thought-out system ready for production use.
+
 
 
