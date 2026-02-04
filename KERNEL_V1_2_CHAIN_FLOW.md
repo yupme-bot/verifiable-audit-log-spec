@@ -98,11 +98,12 @@ Instead:
 If the persisted chain references a segment that is missing from storage, export throws:
 `missing_segment_referenced_by_chain:<seg_id>`.
 
+Absence of a GAP does not imply uninterrupted capture; it only implies that no discontinuity was successfully persisted.
 ---
 
 ## 4) Export format snapshot (accurate shapes)
 
-Export is NDJSON with **`v: "1.1"` on every record** (v1.2 is additive via fields like `h/ch`). The exporter emits:
+Export is NDJSON with v: "1.1" on every record (v1.2 integrity is additive via fields like h / ch). The exporter emits:
 
 1) `type:"run"` (metadata)
 2) zero or more **persisted chain records**:
@@ -131,4 +132,5 @@ Any hash mismatch / reordering / tampering => `status: "invalid"`.
 **Why the active segment is excluded from export:**
 
 Exporting unsealed data creates unverifiable output—records that appear in the file but were never sealed into the hash chain. Persisted-chain-only export avoids this failure mode.
+
 
