@@ -29,7 +29,7 @@ Lying about them is not acceptable.
 
 This specification defines a **correctness core** with the following properties:
 
-- Deterministic event capture and replay
+- Deterministic event ingestion and replay
 - Cryptographic chaining of persisted records
 - Explicit GAP records for missing or failed persistence
 - Degraded-mode behavior under failure
@@ -77,7 +77,7 @@ If those questions matter in your environment, this specification is likely rele
 
 ---
 
-## Example Use Cases
+## Example Use Cases (as a technical component)
 
 - Regulatory or compliance audit trails  
 - Financial or transactional journaling  
