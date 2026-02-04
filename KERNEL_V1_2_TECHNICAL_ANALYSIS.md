@@ -5,7 +5,7 @@
 Kernel v1.2 implements a **forensic-grade cryptographic audit chain** for event capture systems. The design provides:
 
 - **Tamper-evident**: Any modification breaks the cryptographic chain
-- **Crash-resilient**: Partial logs remain verifiable up to the crash point
+- **Crash-aware: Partial logs remain verifiable up to the crash point
 - **Gap-aware**: Missing data is cryptographically incorporated, not hidden
 - **Deterministic**: Same events produce identical hashes across environments
 - **Forward-compatible**: Versioned design allows future evolution
@@ -708,9 +708,10 @@ Kernel v1.2 provides a **production-ready, forensic-grade event capture system**
 
 The system is suitable for:
 - Regulated industries (finance, healthcare)
-- Compliance logging (SOX, GDPR, HIPAA)
-- Security audit trails (SIEM integration)
-- Event sourcing (with integrity guarantees)
-- Legal discovery (tamper-evident records)
+- Compliance logging systems (SOX, GDPR, HIPAA
+- Security audit trails (e.g., SIEM integrations)
+- Event sourcing systems (with integrity guarantees)
+- Legal discovery workflows (tamper-evident records)
 
 The cryptographic design is sound, the engineering is practical, and the documentation is excellent. This is a well-thought-out system ready for production use.
+
