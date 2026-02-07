@@ -1,164 +1,204 @@
 # Verifiable Audit Log Specification
 
-This repository contains a specification for building **deterministic, cryptographically verifiable audit logs** designed for environments where **integrity and forensic correctness matter more than convenience**.
+This repository contains a **reference specification** for a **deterministic, cryptographically verifiable audit log model**.
 
-It documents **behavioral guarantees and failure semantics**, not implementation details.
+It defines **structural guarantees and failure semantics** for audit log *artifacts* —
+**not** a complete logging system, product, or compliance solution.
+
+The goal of this specification is to make **integrity and absence explicit**, especially under failure.
+
+---
+
+## What This Is (and Is Not)
+
+This specification **defines a correctness core**, not an implementation.
+
+It describes:
+
+* how audit log records relate to each other
+* how integrity is preserved deterministically
+* how failures are represented explicitly
+* how incomplete artifacts should be interpreted
+
+It **does not** define:
+
+* capture SDKs or logging agents
+* timestamping or trusted time sources
+* digital signatures or identity binding
+* access control, key management, or transport
+* monitoring, dashboards, or analytics
+* regulatory or legal compliance guarantees
+
+Those concerns are **intentionally out of scope** and are expected to be handled by external systems.
 
 ---
 
 ## Why This Exists
 
-Most logging systems optimize for throughput, aggregation, and search.  
-When things go wrong, they often:
+Most logging systems optimize for throughput, aggregation, and search.
 
-- silently truncate data
-- lose ordering guarantees
-- infer continuity that did not exist
-- make failures indistinguishable from success
+When failures occur, they often:
 
-This specification takes a different stance.
+* silently truncate data
+* lose ordering guarantees
+* infer continuity that did not exist
+* collapse into ambiguous or misleading states
 
-It treats logs as **evidence**, not telemetry.
+This specification takes a different stance:
 
-Failures are expected.  
-Lying about them is not acceptable.
+> **Failures are expected. Silent or ambiguous failure is not acceptable.**
+
+The model defined here treats **absence and failure as first-class, explicit states**, rather than something to be inferred or ignored.
 
 ---
 
 ## What This Specification Defines
 
-This specification defines a **correctness core** with the following properties:
+This specification defines a **minimal, deterministic audit log model** with the following properties:
 
-- Deterministic event ingestion and replay
-- Cryptographic chaining of persisted records
-- Explicit GAP records for missing or failed persistence
-- Degraded-mode behavior under failure
-- Explicit, non-automatic recovery semantics
-- Clear forensic interpretation of recovered logs
+* Deterministic ordering and replay
+* Cryptographic chaining for integrity (not authenticity)
+* Explicit GAP records for missing or failed persistence
+* Well-defined degraded-mode behavior
+* Explicit, non-automatic recovery semantics
+* Clear interpretation rules for incomplete artifacts
 
 The result is an audit artifact that can be:
 
-- replayed deterministically
-- verified independently
-- audited after failure
-- explained to third parties
+* verified independently
+* reasoned about after failure
+* replayed deterministically
+* explained to third parties without hand-waving
 
 ---
 
 ## Scope and Intent
 
-This repository describes the **core integrity and correctness model** for a verifiable audit log.
+This repository defines the **trust boundary for exported audit artifacts**.
 
 It intentionally focuses on:
-- deterministic capture
-- cryptographic continuity
-- explicit failure semantics
-- controlled recovery
 
-Product layers such as SDKs, logging frameworks, observability platforms, dashboards, and high-availability deployments are **deliberately out of scope**, but can be built on top of this model without changing its guarantees.
+* integrity
+* ordering
+* explicit absence
+* failure semantics
+* interpretability after failure
 
-In other words:  
-this specification defines the **trust boundary**.  
-Everything else is an integration concern.
+Everything else — ingestion pipelines, operational reliability, compliance posture, authentication, time anchoring — is an **integration concern**, not part of this specification.
 
----
+In other words:
 
-## When This Matters
-
-This model is relevant if you’ve ever had to answer questions like:
-
-- “Can we prove this log wasn’t altered?”
-- “What exactly do we know we lost during that outage?”
-- “Can we replay this incident deterministically six months later?”
-- “How do we explain this gap to an auditor without hand-waving?”
-- “What does recovery actually mean in terms of evidence?”
-
-If those questions matter in your environment, this specification is likely relevant.
+> This spec defines *what an audit artifact guarantees*.
+> It does not define *how a system achieves those guarantees*.
 
 ---
 
-## Example Use Cases (as a technical component)
+## When This Model Is Useful
 
-- Regulatory or compliance audit trails  
-- Financial or transactional journaling  
-- Incident response and postmortems  
-- Security-sensitive event recording  
-- Any system where logs may be treated as evidence  
+This model is relevant if you need to answer questions like:
+
+* “Can we verify this artifact wasn’t altered?”
+* “What data is present vs. explicitly missing?”
+* “Did recovery preserve integrity, or just resume logging?”
+* “Can we replay this deterministically months later?”
+* “How do we explain gaps honestly to an auditor?”
+
+If those questions matter, this specification may be useful as a building block.
+
+---
+
+## Example Use Cases (as a component)
+
+This model may be composed into systems such as:
+
+* compliance or regulatory audit trails
+* financial or transactional journaling
+* incident response and postmortem analysis
+* security-sensitive event recording
+* long-term archival of audit artifacts
+
+This specification **does not claim sufficiency** for these use cases on its own.
 
 ---
 
 ## Documents
 
-### 1. Chain Flow  
+### 1. Chain Flow
+
 **`KERNEL_V1_2_CHAIN_FLOW.md`**
 
-A visual and conceptual walkthrough of how:
+A conceptual walkthrough of:
 
-- events become segments  
-- segments are sealed  
-- the cryptographic chain advances  
-- GAPs and recovery fit into continuity  
+* event → segment transitions
+* segment sealing
+* cryptographic continuity
+* GAPs and recovery within the chain
 
-Start here for a fast mental model.
+Start here for a mental model.
 
 ---
 
-### 2. Technical Analysis  
+### 2. Technical Analysis
+
 **`KERNEL_V1_2_TECHNICAL_ANALYSIS.md`**
 
-A detailed analysis of:
+Covers:
 
-- cryptographic design
-- determinism guarantees
-- threat model
-- integrity properties
-- GAP semantics
+* determinism guarantees
+* integrity properties
+* threat assumptions
+* cryptographic design rationale
+* GAP semantics
 
-Read this to understand **why the system is trustworthy**.
+This explains **what the model guarantees and what it does not**.
 
 ---
 
-### 3. Recovery & Continuity Specification  
+### 3. Recovery & Continuity Specification
+
 **`KERNEL_V1_2_RECOVERY_CONTINUITY_SPEC.md`**
 
 Defines:
 
-- degraded mode behavior
-- explicit recovery semantics
-- continuity invariants
-- how recovered logs should be interpreted and verified
+* degraded-mode behavior
+* recovery semantics
+* continuity invariants
+* how recovered artifacts should be interpreted
 
-Read this to understand **what happens when things go wrong**.
+This document answers: *“What does recovery actually mean?”*
 
 ---
 
 ## Design Philosophy
 
-- Lossy data, lossless truth  
-- Explicit failure over silent truncation  
-- Deterministic replay over best-effort capture  
-- Verifiable artifacts over inferred continuity  
+* Explicit absence over silent failure
+* Deterministic replay over best-effort capture
+* Integrity over convenience
+* Verifiable artifacts over inferred continuity
 
 ---
 
 ## Intended Audience
 
-- Infrastructure and platform engineers  
-- Security and compliance teams  
-- Audit and forensic reviewers  
-- Organizations with regulatory or evidentiary requirements  
-- Anyone building systems where logs must be provable  
+* infrastructure and platform engineers
+* security and compliance engineers
+* audit and forensic reviewers
+* researchers examining audit failure modes
+* teams designing high-trust systems
+
+This is **not** end-user documentation.
 
 ---
 
 ## Status
 
-This specification reflects a stable, production-hardened design.  
-Implementation details are intentionally omitted.
+This specification reflects a **stable reference model**.
 
-The focus is on guarantees, invariants, and failure behavior — the aspects that matter when trust is on the line.
+It documents guarantees, invariants, and failure semantics only.
+Implementation strategies and operational concerns are intentionally omitted.
 
 ---
 
-For private inquiries, please open an issue or contact the repository owner via GitHub.
+## Contact
 
+For questions or discussion, please open an issue in this repository.
